@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DAC Reality Check | Distilled Partner Hub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #e0e0e0;
+            --black: #000000;
+            --white: #ffffff;
+            --accent: #FFD100;
+            --border-width: 4px;
+            --shadow: 8px 8px 0px 0px var(--black);
+            --noise: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3ExternalIcon%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        body {
+            background-color: var(--bg);
+            font-family: 'Space Mono', monospace;
+            color: var(--black);
+            margin: 0;
+            padding: 2rem;
+            line-height: 1.4;
+        }
+
+        body::before {
+            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--noise); opacity: 0.04; pointer-events: none; z-index: 1000;
+        }
+
+        /* Nav */
+        nav { margin-bottom: 2rem; }
+        nav a { font-weight: bold; color: var(--black); text-decoration: none; border-bottom: 2px solid var(--black); text-transform: uppercase; }
+        nav a:hover { background: var(--accent); }
+
+        .container { max-width: 800px; margin: 0 auto; }
+
+        /* The Tool Block */
+        .tool-block {
+            background: var(--white);
+            border: var(--border-width) solid var(--black);
+            box-shadow: var(--shadow);
+            padding: 2rem;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        h1 { font-family: 'Archivo Black', sans-serif; font-size: 2.5rem; text-transform: uppercase; margin-bottom: 1.5rem; line-height: 1; }
+        
+        .input-group { margin-bottom: 1.5rem; }
+        label { display: block; font-weight: bold; margin-bottom: 0.5rem; text-transform: uppercase; font-size: 0.9rem; }
+        
+        input, select {
+            width: 100%;
+            padding: 1rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 1rem;
+            border: 2px solid var(--black);
+            background: #f8f8f8;
+            border-radius: 0;
+            transition: all 0.2s;
+        }
+        input:focus, select:focus { outline: none; background: var(--accent); }
+
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+        button {
+            width: 100%;
+            background: var(--black);
+            color: var(--white);
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 1.2rem;
+            padding: 1rem;
+            border: none;
+            text-transform: uppercase;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: all 0.2s;
+        }
+        button:hover { background: var(--accent); color: var(--black); box-shadow: 4px 4px 0px 0px var(--black); transform: translate(-2px, -2px); }
+
+        /* Results */
+        .results-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 2rem; display: none; }
+        .stat-card { border: 2px solid var(--black); padding: 1rem; text-align: center; }
+        .stat-card h3 { font-size: 0.75rem; text-transform: uppercase; margin: 0 0 0.5rem 0; }
+        .stat-card p { font-size: 1.2rem; font-weight: bold; margin: 0; }
+
+        .action-plan { margin-top: 2rem; padding: 2rem; background: var(--accent); border: 4px solid var(--black); text-align: center; display: none; }
+        .action-plan h2 { font-family: 'Archivo Black', sans-serif; font-size: 1.5rem; margin: 0 0 1rem 0; }
+        .quota-circle { font-size: 4rem; font-weight: 900; line-height: 1; margin: 1rem 0; font-family: 'Archivo Black', sans-serif; }
+
+        /* Embed Arsenal Section */
+        .arsenal-block { background: var(--black); color: var(--white); padding: 2rem; border: var(--border-width) solid var(--black); box-shadow: var(--shadow); }
+        .arsenal-block h2 { font-family: 'Archivo Black', sans-serif; color: var(--accent); margin-bottom: 1rem; }
+        .code-box { background: #1a1a1a; border: 2px solid #333; color: #00ff00; padding: 1.5rem; font-family: monospace; font-size: 0.9rem; white-space: pre-wrap; margin: 1rem 0; overflow-x: auto; }
+        .copy-btn { background: var(--white); color: var(--black); width: auto; padding: 0.5rem 1.5rem; font-size: 1rem; float: right; }
+
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html">← Back to Hub</a>
+    </nav>
+
+    <div class="container">
+        
+        <div class="tool-block">
+            <h1>DAC Reality Check Engine</h1>
+            
+            <div class="input-group">
+                <label>Monthly Net Income Goal ($)</label>
+                <input type="number" id="incomeGoal" value="10000">
+            </div>
+
+            <div class="grid">
+                <div class="input-group">
+                    <label>Commission Tier</label>
+                    <select id="tier">
+                        <option value="40">40% (Qualified)</option>
+                        <option value="50">50% (GA5)</option>
+                        <option value="80">80% (NMO)</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Agency Growth Plan</label>
+                    <select id="growthPlan">
+                        <option value="50000">Conservative ($50k Avg)</option>
+                        <option value="75000" selected>Standard ($75k Avg)</option>
+                    </select>
+                </div>
+            </div>
+
+            <button onclick="calculatePlan()">Analyze Window</button>
+
+            <div class="results-grid" id="results">
+                <div class="stat-card"><h3>BR Per Client</h3><p id="outBrRange">$0 - $0</p></div>
+                <div class="stat-card"><h3>Total BR Needed</h3><p id="outTotalBr">$0</p></div>
+            </div>
+
+            <div class="action-plan" id="actionPlan">
+                <h2>Your Daily Mission Window</h2>
+                <div class="quota-circle" id="dailyConvoRange">0 - 0</div>
+                <p><strong>Owner Conversations Per Day</strong></p>
+            </div>
+        </div>
+
+        <div class="arsenal-block">
+            <h2>Deploy This Tool</h2>
+            <p>Paste this code snippet into an HTML block on your Wix, WordPress, or custom site to embed this calculator for your sub-agents.</p>
+            
+            <label style="color: var(--white); margin-top: 1rem;">Enter Your Agent ID to white-label:</label>
+            <input type="text" id="agentInput" placeholder="e.g. 102345" style="max-width: 200px; padding: 0.5rem; margin-bottom: 1rem;" onkeyup="updateCode()">
+            
+            <div class="code-box" id="embedCode">
+&lt;!-- Distilled Funding Partner Tool --&gt;
+&lt;script src="https://distilled-partner-hub.vercel.app/embed.js" data-tool="reality-check" data-agent-id="YOUR_ID"&gt;&lt;/script&gt;
+            </div>
+            
+        </div>
+    </div>
+
+    <script>
+        // Calculator Logic
+        function calculatePlan() {
+            const incomeGoal = parseFloat(document.getElementById('incomeGoal').value);
+            const tier = parseFloat(document.getElementById('tier').value) / 100;
+            const avgFunding = parseFloat(document.getElementById('growthPlan').value);
+            if (!incomeGoal) return;
+
+            const brLow = avgFunding * 0.05;
+            const brHigh = avgFunding * 0.10;
+            const totalBrNeeded = incomeGoal / tier;
+            const clientsNeededLow = totalBrNeeded / brHigh;
+            const clientsNeededHigh = totalBrNeeded / brLow;
+            const dailyLow = Math.ceil((clientsNeededLow * 80) / 20);
+            const dailyHigh = Math.ceil((clientsNeededHigh * 80) / 20);
+
+            document.getElementById('outBrRange').innerText = `$${brLow.toLocaleString()} - $${brHigh.toLocaleString()}`;
+            document.getElementById('outTotalBr').innerText = '$' + Math.ceil(totalBrNeeded).toLocaleString();
+            document.getElementById('dailyConvoRange').innerText = `${dailyLow} - ${dailyHigh}`;
+
+            document.getElementById('results').style.display = 'grid';
+            document.getElementById('actionPlan').style.display = 'block';
+        }
+
+        // Auto-update Embed Code
+        function updateCode() {
+            const id = document.getElementById('agentInput').value || 'YOUR_ID';
+            document.getElementById('embedCode').innerText = `\n<script src="https://distilled-partner-hub.vercel.app/embed.js" data-tool="reality-check" data-agent-id="${id}"><\/script>`;
+        }
+    </script>
+</body>
+</html>
