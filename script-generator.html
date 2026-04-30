@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compliant Script Generator | Distilled Partner Hub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #e0e0e0;
+            --black: #000000;
+            --white: #ffffff;
+            --accent: #FFD100;
+            --distilled-blue: #0047AB;
+            --success: #28a745;
+            --border-width: 4px;
+            --shadow: 8px 8px 0px 0px var(--black);
+            --noise: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3ExternalIcon%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        body {
+            background-color: var(--bg);
+            font-family: 'Space Mono', monospace;
+            color: var(--black);
+            margin: 0;
+            padding: 2rem;
+            line-height: 1.4;
+        }
+
+        body::before {
+            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--noise); opacity: 0.04; pointer-events: none; z-index: 1000;
+        }
+
+        /* Nav */
+        nav { margin-bottom: 2rem; }
+        nav a { font-weight: bold; color: var(--black); text-decoration: none; border-bottom: 2px solid var(--black); text-transform: uppercase; }
+        nav a:hover { background: var(--accent); }
+
+        .container { max-width: 800px; margin: 0 auto; }
+
+        /* The Tool Block */
+        .tool-block {
+            background: var(--white);
+            border: var(--border-width) solid var(--black);
+            box-shadow: var(--shadow);
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        h1 { font-family: 'Archivo Black', sans-serif; font-size: 2.5rem; text-transform: uppercase; margin-bottom: 0.5rem; line-height: 1; }
+        p.subtitle { margin-bottom: 2rem; font-weight: bold; text-transform: uppercase; font-size: 0.9rem; color: #555; }
+
+        /* Inputs */
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem; }
+        .input-group label { display: block; font-weight: bold; margin-bottom: 0.5rem; text-transform: uppercase; font-size: 0.9rem; }
+        
+        select {
+            width: 100%; padding: 1rem; font-family: 'Space Mono', monospace; font-size: 1rem;
+            border: 3px solid var(--black); background: #f8f8f8; cursor: pointer; transition: all 0.2s;
+            appearance: none;
+        }
+        select:focus { outline: none; background: var(--accent); border-color: var(--black); }
+
+        /* Output Area */
+        .output-wrapper { position: relative; margin-bottom: 1.5rem; }
+        textarea {
+            width: 100%; height: 250px; padding: 1.5rem; font-family: 'Space Mono', monospace;
+            font-size: 1rem; border: 3px solid var(--black); background: var(--white);
+            resize: none; box-sizing: border-box; line-height: 1.5; color: var(--black);
+        }
+        textarea:focus { outline: none; border-color: var(--distilled-blue); }
+
+        .btn-copy {
+            width: 100%; background: var(--black); color: var(--white);
+            font-family: 'Archivo Black', sans-serif; font-size: 1.2rem; padding: 1.2rem;
+            border: 3px solid var(--black); text-transform: uppercase; text-align: center;
+            cursor: pointer; transition: all 0.2s;
+        }
+        .btn-copy:hover { background: var(--accent); color: var(--black); transform: translate(-4px, -4px); box-shadow: 6px 6px 0px 0px var(--black); }
+        .btn-copy.copied { background: var(--success); color: var(--white); border-color: var(--success); box-shadow: none; transform: none; }
+
+        /* Embed Arsenal Section */
+        .arsenal-block { background: var(--black); color: var(--white); padding: 2rem; border: var(--border-width) solid var(--black); box-shadow: var(--shadow); }
+        .arsenal-block h2 { font-family: 'Archivo Black', sans-serif; color: var(--accent); margin-bottom: 1rem; }
+        .code-box { background: #1a1a1a; border: 2px solid #333; color: #00ff00; padding: 1.5rem; font-family: monospace; font-size: 0.9rem; white-space: pre-wrap; margin: 1rem 0; overflow-x: auto; }
+
+        @media (max-width: 600px) { .grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html">← Back to Hub</a>
+    </nav>
+
+    <div class="container">
+        
+        <div class="tool-block" id="toolBlock">
+            <h1>Outreach Script Generator</h1>
+            <p class="subtitle">Deploy compliant, high-converting copy instantly.</p>
+            
+            <div class="grid">
+                <div class="input-group">
+                    <label>Target Audience</label>
+                    <select id="audienceSelect" onchange="generateScript()">
+                        <option value="general">General Business</option>
+                        <option value="trucking">Trucking & Logistics</option>
+                        <option value="retail">Retail & E-Commerce</option>
+                        <option value="gig">Gig Worker (1099/Uber/App)</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Outreach Platform</label>
+                    <select id="platformSelect" onchange="generateScript()">
+                        <option value="sms">SMS / Text Message</option>
+                        <option value="email">Email</option>
+                        <option value="dm">LinkedIn / IG DM</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="output-wrapper">
+                <textarea id="scriptOutput" readonly></textarea>
+            </div>
+            
+            <button class="btn-copy" id="copyBtn" onclick="copyScript()">Copy Script to Clipboard</button>
+        </div>
+
+        <div class="arsenal-block">
+            <h2>Deploy This Asset</h2>
+            <p>Embed this tool on your team training site so your downline always has compliant, pre-formatted scripts linked to their ID.</p>
+            
+            <label style="color: var(--white); margin-top: 1rem; font-weight: bold;">Enter Your Agent ID to white-label:</label>
+            <input type="text" id="agentInput" placeholder="e.g. 102345" style="max-width: 200px; padding: 0.5rem; margin-bottom: 1rem; border: 2px solid var(--accent); background: #111; color: var(--white); font-family: monospace;" onkeyup="updateCode()">
+            
+            <div class="code-box" id="embedCode">
+&lt;!-- Distilled Funding Partner Script Tool --&gt;
+&lt;script src="https://distilled-partner-hub.vercel.app/embed.js" data-tool="script-generator" data-agent-id="YOUR_ID"&gt;&lt;/script&gt;
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Setup Agent ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlAgentID = urlParams.get('agentID') || 'YOUR_ID';
+
+        // WHITE-LABEL LOGIC
+        if (urlParams.get('embedded') === 'true') {
+            const arsenalBlock = document.querySelector('.arsenal-block');
+            const navBlock = document.querySelector('nav');
+            if(arsenalBlock) arsenalBlock.style.display = 'none';
+            if(navBlock) navBlock.style.display = 'none';
+        }
+
+        // Link Generators
+        const bankBreezyLink = `https://bankbreezy.com/${urlAgentID}`;
+        const giggleLink = `https://davidallencapital.com/micro/${urlAgentID}`;
+
+        // Script Database (Compliant & Conversional)
+        const scripts = {
+            general: {
+                sms: `Hi [Name]. I'm a local Independent Capital Broker. If you need working capital for [Business Name], we are offering approvals up to $2M with no hard credit pull. See what you qualify for here: ${bankBreezyLink} \n\nReply STOP to opt out.`,
+                email: `Subject: Capital available for [Business Name]\n\nHi [Name],\n\nAs an Independent Capital Broker, I help local businesses secure funding when banks say no or take too long.\n\nOur primary partner is currently offering up to $2M in working capital with funding as fast as 1-2 days. It requires zero upfront fees and there is no hard credit pull to review your offers.\n\nYou can review the requirements and submit a pre-qualification request here:\n${bankBreezyLink}\n\nLet me know if you have any questions.\n\nBest,\n[Your Name]\nIndependent Agent\n\nIf you no longer wish to receive emails, reply "Unsubscribe".`,
+                dm: `Hey [Name], love what you are building with [Business Name]. I'm an independent broker and just wanted to drop my info. If you ever need fast working capital for expansion or payroll (up to $2M, funding in 1-2 days), you can check your approval amount without a hard credit pull here: ${bankBreezyLink} Keep crushing it!`
+            },
+            trucking: {
+                sms: `Hey [Name]. I'm an Independent Capital Broker specializing in logistics. If you need cash for repairs, fuel, or a new rig, see your funding options (no hard pull): ${bankBreezyLink} \n\nReply STOP to opt out.`,
+                email: `Subject: Keeping your trucks on the road\n\nHi [Name],\n\nAs an Independent Capital Broker working in the logistics space, I know a blown transmission or delayed invoice can sideline a truck and kill your cash flow.\n\nWe provide fast working capital for owner-operators and fleet managers. Approvals are based on your revenue, not just your FICO. No hard credit pull is required to see your options.\n\nCheck your approval limits here:\n${bankBreezyLink}\n\nKeep the rubber side down.\n\nBest,\n[Your Name]\nIndependent Agent\n\nIf you no longer wish to receive emails, reply "Unsubscribe".`,
+                dm: `Hey [Name], reaching out as an independent broker for logistics companies. If you ever need capital to cover major repairs, fuel gaps, or down payments on new rigs, we offer funding in 1-2 days with no hard credit pull. Keep it in your back pocket: ${bankBreezyLink} Stay safe out there.`
+            },
+            retail: {
+                sms: `Hi [Name]. I'm an Independent Capital Broker. If you need working capital for inventory or remodeling at [Business Name], check your options with no hard credit pull here: ${bankBreezyLink} \n\nReply STOP to opt out.`,
+                email: `Subject: Capital for inventory and expansion at [Business Name]\n\nHi [Name],\n\nAs an Independent Capital Broker, I help retail business owners secure capital without the massive paperwork requirements of traditional banks.\n\nWhether you need to stock up on inventory for the busy season or remodel your location, we offer funding up to $2M in 1-2 days. There is no hard credit pull to receive offers.\n\nCheck your approval amount here:\n${bankBreezyLink}\n\nBest,\n[Your Name]\nIndependent Agent\n\nIf you no longer wish to receive emails, reply "Unsubscribe".`,
+                dm: `Hey [Name], as an independent broker, I help retail owners secure working capital for inventory pushes and expansion. If you ever need fast funding without a hard credit pull, you can check your options here: ${bankBreezyLink} Hope you have a great week of sales!`
+            },
+            gig: {
+                sms: `Hey [Name]. I'm an Independent Broker. Since you drive for [Uber/Lyft/Doordash], you qualify for instant micro-funding based on your app deposits. Get your cash here: ${giggleLink} \n\nReply STOP to opt out.`,
+                email: `Subject: Instant funding for gig workers\n\nHi [Name],\n\nMost banks won't lend to 1099 contractors or gig economy workers. As an Independent Broker, I have a partner who specifically funds this space.\n\nIf you drive for Uber, Lyft, or Doordash (or work as a freelancer) and have at least $3k/mo in deposits, you can access our micro-funding program. Approvals are instant, and funds are wired automatically.\n\nGet your instant funding here:\n${giggleLink}\n\nBest,\n[Your Name]\nIndependent Agent\n\nIf you no longer wish to receive emails, reply "Unsubscribe".`,
+                dm: `Hey [Name]! I'm an independent broker and noticed you are a 1099/Gig worker. If you ever need a cash advance but banks keep turning you down, our partner uses your app deposits to approve you instantly. You can access the micro-funding portal here: ${giggleLink} Have a great day!`
+            }
+        };
+
+        function generateScript() {
+            const audience = document.getElementById('audienceSelect').value;
+            const platform = document.getElementById('platformSelect').value;
+            
+            const scriptText = scripts[audience][platform];
+            document.getElementById('scriptOutput').value = scriptText;
+            
+            // Reset Copy Button
+            const btn = document.getElementById('copyBtn');
+            btn.innerText = "Copy Script to Clipboard";
+            btn.classList.remove('copied');
+        }
+
+        function copyScript() {
+            const textarea = document.getElementById('scriptOutput');
+            textarea.select();
+            textarea.setSelectionRange(0, 99999); // For mobile devices
+            
+            navigator.clipboard.writeText(textarea.value).then(() => {
+                const btn = document.getElementById('copyBtn');
+                btn.innerText = "COPIED!";
+                btn.classList.add('copied');
+                
+                setTimeout(() => {
+                    btn.innerText = "Copy Script to Clipboard";
+                    btn.classList.remove('copied');
+                }, 2500);
+            });
+        }
+
+        // Auto-update Embed Code Box
+        function updateCode() {
+            const id = document.getElementById('agentInput').value || 'YOUR_ID';
+            document.getElementById('embedCode').innerText = `\n<script src="https://distilled-partner-hub.vercel.app/embed.js" data-tool="script-generator" data-agent-id="${id}"><\/script>`;
+        }
+
+        // Initialize first script on load
+        window.onload = generateScript;
+    </script>
+</body>
+</html>
