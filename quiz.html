@@ -184,9 +184,17 @@
     </div>
 
     <script>
-        // Check for Agent ID in the URL (so the tool functions correctly when embedded)
+        // Setup Agent ID from URL
         const urlParams = new URLSearchParams(window.location.search);
         const urlAgentID = urlParams.get('agentID') || 'YOUR_ID';
+
+        // WHITE-LABEL LOGIC: Hide the "Arsenal Block" if embedded on a partner's site
+        if (urlParams.get('embedded') === 'true') {
+            const arsenalBlock = document.querySelector('.arsenal-block');
+            const navBlock = document.querySelector('nav');
+            if(arsenalBlock) arsenalBlock.style.display = 'none';
+            if(navBlock) navBlock.style.display = 'none';
+        }
 
         // Auto-Set the Affiliate Links right away
         document.getElementById('linkBankBreezy').href = `https://bankbreezy.com/${urlAgentID}`;
