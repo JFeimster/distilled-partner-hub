@@ -97,7 +97,6 @@
         .arsenal-block { background: var(--black); color: var(--white); padding: 2rem; border: var(--border-width) solid var(--black); box-shadow: var(--shadow); }
         .arsenal-block h2 { font-family: 'Archivo Black', sans-serif; color: var(--accent); margin-bottom: 1rem; }
         .code-box { background: #1a1a1a; border: 2px solid #333; color: #00ff00; padding: 1.5rem; font-family: monospace; font-size: 0.9rem; white-space: pre-wrap; margin: 1rem 0; overflow-x: auto; }
-        .copy-btn { background: var(--white); color: var(--black); width: auto; padding: 0.5rem 1.5rem; font-size: 1rem; float: right; }
 
     </style>
 </head>
@@ -160,11 +159,19 @@
 &lt;!-- Distilled Funding Partner Tool --&gt;
 &lt;script src="https://distilled-partner-hub.vercel.app/embed.js" data-tool="reality-check" data-agent-id="YOUR_ID"&gt;&lt;/script&gt;
             </div>
-            
         </div>
     </div>
 
     <script>
+        // WHITE-LABEL LOGIC: Hide the "Arsenal Block" if embedded on a partner's site
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('embedded') === 'true') {
+            const arsenalBlock = document.querySelector('.arsenal-block');
+            const navBlock = document.querySelector('nav');
+            if(arsenalBlock) arsenalBlock.style.display = 'none';
+            if(navBlock) navBlock.style.display = 'none';
+        }
+
         // Calculator Logic
         function calculatePlan() {
             const incomeGoal = parseFloat(document.getElementById('incomeGoal').value);
