@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Am I Fundable? | Distilled Partner Hub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #e0e0e0;
+            --black: #000000;
+            --white: #ffffff;
+            --accent: #FFD100;
+            --distilled-blue: #0047AB;
+            --border-width: 4px;
+            --shadow: 8px 8px 0px 0px var(--black);
+            --noise: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3ExternalIcon%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        body {
+            background-color: var(--bg);
+            font-family: 'Space Mono', monospace;
+            color: var(--black);
+            margin: 0;
+            padding: 2rem;
+            line-height: 1.4;
+        }
+
+        body::before {
+            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--noise); opacity: 0.04; pointer-events: none; z-index: 1000;
+        }
+
+        /* Nav */
+        nav { margin-bottom: 2rem; }
+        nav a { font-weight: bold; color: var(--black); text-decoration: none; border-bottom: 2px solid var(--black); text-transform: uppercase; }
+        nav a:hover { background: var(--accent); }
+
+        .container { max-width: 800px; margin: 0 auto; }
+
+        /* The Tool Block */
+        .tool-block {
+            background: var(--white);
+            border: var(--border-width) solid var(--black);
+            box-shadow: var(--shadow);
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        h1 { font-family: 'Archivo Black', sans-serif; font-size: 2.5rem; text-transform: uppercase; margin-bottom: 0.5rem; line-height: 1; }
+        p.subtitle { margin-bottom: 2rem; font-weight: bold; text-transform: uppercase; font-size: 0.9rem; color: #555; }
+
+        /* Progress Bar */
+        .progress-bar-container { width: 100%; border: 3px solid var(--black); height: 20px; background: #eee; margin-bottom: 2rem; position: relative; }
+        .progress-fill { height: 100%; background: var(--accent); width: 25%; transition: width 0.3s ease; border-right: 3px solid var(--black); }
+
+        /* Quiz Steps */
+        .step { display: none; }
+        .step.active { display: block; animation: slideUp 0.3s ease-out forwards; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        h2.question { font-family: 'Archivo Black', sans-serif; font-size: 1.5rem; margin-bottom: 1.5rem; }
+
+        .option-btn {
+            display: block; width: 100%; background: var(--white); color: var(--black);
+            font-family: 'Space Mono', monospace; font-size: 1.1rem; font-weight: bold;
+            padding: 1.2rem; border: 3px solid var(--black); margin-bottom: 1rem;
+            text-transform: uppercase; cursor: pointer; transition: all 0.2s;
+        }
+        .option-btn:hover { background: var(--black); color: var(--white); transform: translate(-4px, -4px); box-shadow: 6px 6px 0px 0px var(--accent); }
+
+        /* Results */
+        .result-box { display: none; border: 4px solid var(--black); padding: 2rem; text-align: left; }
+        .result-box.giggle { background: var(--accent); }
+        .result-box.bankbreezy { background: var(--distilled-blue); color: var(--white); }
+        .result-box.bankbreezy h2, .result-box.bankbreezy li { color: var(--white); }
+        .result-box.decline { background: #ccc; }
+
+        .result-box h2 { font-family: 'Archivo Black', sans-serif; font-size: 2rem; margin-top: 0; margin-bottom: 1rem; text-transform: uppercase; }
+        .result-box ul { font-size: 1rem; margin-bottom: 2rem; font-weight: bold; padding-left: 1.5rem; }
+        .result-box li { margin-bottom: 0.5rem; }
+
+        .apply-btn {
+            display: inline-block; width: 100%; background: var(--black); color: var(--white);
+            font-family: 'Archivo Black', sans-serif; font-size: 1.2rem; padding: 1.2rem;
+            border: 3px solid var(--black); text-transform: uppercase; text-align: center;
+            text-decoration: none; transition: all 0.2s; box-sizing: border-box;
+        }
+        .apply-btn:hover { background: var(--white); color: var(--black); transform: translate(-4px, -4px); box-shadow: 6px 6px 0px 0px var(--black); }
+        .bankbreezy .apply-btn:hover { background: var(--accent); }
+
+        /* Embed Arsenal Section */
+        .arsenal-block { background: var(--black); color: var(--white); padding: 2rem; border: var(--border-width) solid var(--black); box-shadow: var(--shadow); }
+        .arsenal-block h2 { font-family: 'Archivo Black', sans-serif; color: var(--accent); margin-bottom: 1rem; }
+        .code-box { background: #1a1a1a; border: 2px solid #333; color: #00ff00; padding: 1.5rem; font-family: monospace; font-size: 0.9rem; white-space: pre-wrap; margin: 1rem 0; overflow-x: auto; }
+
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html">← Back to Hub</a>
+    </nav>
+
+    <div class="container">
+        
+        <div class="tool-block" id="toolBlock">
+            <h1>Am I Fundable?</h1>
+            <p class="subtitle" id="subtitle">Answer 4 questions to verify your capital options.</p>
+            
+            <div class="progress-bar-container" id="progressWrapper">
+                <div class="progress-fill" id="progress"></div>
+            </div>
+
+            <div class="step active" id="step1">
+                <h2 class="question">1. Where do your sales get deposited?</h2>
+                <button class="option-btn" onclick="nextStep(1, 'Business')">Business Bank Account</button>
+                <button class="option-btn" onclick="nextStep(1, 'Personal')">Personal Bank Account</button>
+            </div>
+
+            <div class="step" id="step2">
+                <h2 class="question">2. Lowest monthly revenue in the last 90 days?</h2>
+                <button class="option-btn" onclick="nextStep(2, 'High')">Over $15,000 / mo</button>
+                <button class="option-btn" onclick="nextStep(2, 'Medium')">$3,000 to $15,000 / mo</button>
+                <button class="option-btn" onclick="nextStep(2, 'Low')">Under $3,000 / mo</button>
+            </div>
+
+            <div class="step" id="step3">
+                <h2 class="question">3. How long have you been in business?</h2>
+                <button class="option-btn" onclick="nextStep(3, 'Established')">6 Months or More</button>
+                <button class="option-btn" onclick="nextStep(3, 'New')">Less than 6 Months</button>
+            </div>
+
+            <div class="step" id="step4">
+                <h2 class="question">4. Estimated credit score?</h2>
+                <button class="option-btn" onclick="nextStep(4, 'Good')">500 or Higher</button>
+                <button class="option-btn" onclick="nextStep(4, 'Poor')">Under 500</button>
+            </div>
+
+            <div class="result-box bankbreezy" id="resBankBreezy">
+                <h2>Pre-Qualified: Core Capital</h2>
+                <p><strong>Your profile matches our BankBreezy Business Capital tier.</strong></p>
+                <ul>
+                    <li>Approvals up to $2M</li>
+                    <li>Funding in 1-2 business days</li>
+                    <li>No hard credit pull to receive offers</li>
+                </ul>
+                <a href="#" class="apply-btn" id="linkBankBreezy">Claim Your Capital Now</a>
+            </div>
+
+            <div class="result-box giggle" id="resGiggle">
+                <h2>Verified: Micro-Funding</h2>
+                <p><strong>Your profile perfectly matches our Giggle Instant Funding program.</strong></p>
+                <ul>
+                    <li>Instant automated approval</li>
+                    <li>Self-employed / 1099 eligible</li>
+                    <li>Funds wired instantly</li>
+                </ul>
+                <a href="#" class="apply-btn" id="linkGiggle">Get Instant Funding</a>
+            </div>
+
+            <div class="result-box decline" id="resDecline">
+                <h2>Status: Incubating</h2>
+                <p><strong>Our partners currently require a minimum of $3,000/mo in revenue.</strong></p>
+                <p>Once your monthly deposits consistently cross the $3,000 threshold, return here. We have capital waiting for you.</p>
+            </div>
+        </div>
+
+        <div class="arsenal-block">
+            <h2>Deploy This Lead-Gen Asset</h2>
+            <p>Paste this code snippet into your website. When users complete the quiz, the "Apply" buttons will automatically route to your specific DAC affiliate link.</p>
+            
+            <label style="color: var(--white); margin-top: 1rem; font-weight: bold;">Enter Your Agent ID to white-label:</label>
+            <input type="text" id="agentInput" placeholder="e.g. 102345" style="max-width: 200px; padding: 0.5rem; margin-bottom: 1rem; border: 2px solid var(--accent); background: #111; color: var(--white); font-family: monospace;" onkeyup="updateCode()">
+            
+            <div class="code-box" id="embedCode">
+&lt;!-- Distilled Funding Partner Quiz --&gt;
+&lt;script src="https://distilled-partner-hub.vercel.app/embed.js" data-tool="quiz" data-agent-id="YOUR_ID"&gt;&lt;/script&gt;
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check for Agent ID in the URL (so the tool functions correctly when embedded)
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlAgentID = urlParams.get('agentID') || 'YOUR_ID';
+
+        // Auto-Set the Affiliate Links right away
+        document.getElementById('linkBankBreezy').href = `https://bankbreezy.com/${urlAgentID}`;
+        document.getElementById('linkGiggle').href = `https://davidallencapital.com/micro/${urlAgentID}`;
+
+        // Quiz Logic
+        const userData = { account: '', revenue: '', time: '', credit: '' };
+
+        function nextStep(currentStep, answer) {
+            if(currentStep === 1) userData.account = answer;
+            if(currentStep === 2) userData.revenue = answer;
+            if(currentStep === 3) userData.time = answer;
+            if(currentStep === 4) userData.credit = answer;
+
+            document.getElementById(`step${currentStep}`).classList.remove('active');
+
+            if (currentStep < 4) {
+                const next = currentStep + 1;
+                document.getElementById(`step${next}`).classList.add('active');
+                document.getElementById('progress').style.width = (next * 25) + '%';
+            } else {
+                document.getElementById('progressWrapper').style.display = 'none';
+                document.getElementById('subtitle').style.display = 'none';
+                calculateResult();
+            }
+        }
+
+        function calculateResult() {
+            if (userData.revenue === 'Low') {
+                document.getElementById('resDecline').style.display = 'block';
+            } 
+            else if (userData.account === 'Business' && userData.revenue === 'High' && userData.time === 'Established' && userData.credit === 'Good') {
+                document.getElementById('resBankBreezy').style.display = 'block';
+                document.getElementById('toolBlock').style.borderColor = "var(--distilled-blue)";
+                document.getElementById('toolBlock').style.boxShadow = "8px 8px 0px 0px var(--distilled-blue)";
+            } 
+            else {
+                document.getElementById('resGiggle').style.display = 'block';
+                document.getElementById('toolBlock').style.borderColor = "var(--accent)";
+                document.getElementById('toolBlock').style.boxShadow = "8px 8px 0px 0px var(--accent)";
+            }
+        }
+
+        // Auto-update Embed Code Box
+        function updateCode() {
+            const id = document.getElementById('agentInput').value || 'YOUR_ID';
+            document.getElementById('embedCode').innerText = `\n<script src="https://distilled-partner-hub.vercel.app/embed.js" data-tool="quiz" data-agent-id="${id}"><\/script>`;
+        }
+    </script>
+</body>
+</html>
