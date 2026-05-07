@@ -1,6 +1,6 @@
-# Distilled Partner Hub
-
 <img width="1600" height="900" alt="Image" src="https://github.com/user-attachments/assets/7adf86ae-2327-4c3e-881d-e9813058a83a" />
+
+# Distilled Partner Hub
 
 Static partner-facing tool hub for Distilled Funding. This repo contains a small Vercel-deployable HTML/JS site that showcases and embeds white-labeled funding, recruiting, and outreach tools for partners.
 
