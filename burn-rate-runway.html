@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Burn Rate Runway Extender | Distilled Partner Hub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #e0e0e0;
+            --black: #000000;
+            --white: #ffffff;
+            --accent: #FFD100;
+            --distilled-blue: #0047AB;
+            --success: #28a745;
+            --border-width: 4px;
+            --shadow: 8px 8px 0px 0px var(--black);
+            --noise: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3ExternalIcon%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg);
+            font-family: 'Space Mono', monospace;
+            color: var(--black);
+            margin: 0;
+            padding: 2rem;
+            line-height: 1.4;
+        }
+
+        body::before {
+            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--noise); opacity: 0.04; pointer-events: none; z-index: 1000;
+        }
+
+        nav { margin-bottom: 2rem; }
+        nav a { font-weight: bold; color: var(--black); text-decoration: none; border-bottom: 2px solid var(--black); text-transform: uppercase; }
+        nav a:hover { background: var(--accent); }
+
+        .container { max-width: 980px; margin: 0 auto; }
+
+        .tool-block {
+            background: var(--white);
+            border: var(--border-width) solid var(--black);
+            box-shadow: var(--shadow);
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        h1 { font-family: 'Archivo Black', sans-serif; font-size: clamp(2.4rem, 7vw, 4.5rem); text-transform: uppercase; margin: 0 0 0.75rem; line-height: 0.95; }
+        h2 { font-family: 'Archivo Black', sans-serif; text-transform: uppercase; margin: 0 0 1rem; }
+        p.subtitle { margin-bottom: 2rem; font-weight: bold; text-transform: uppercase; font-size: 0.9rem; color: #555; }
+
+        .widget-frame {
+            width: 100%;
+            max-width: 940px;
+            height: 980px;
+            border: 0;
+            display: block;
+            margin: 0 auto;
+            background: transparent;
+        }
+
+        .arsenal-block { background: var(--black); color: var(--white); padding: 2rem; border: var(--border-width) solid var(--black); box-shadow: var(--shadow); }
+        .arsenal-block h2 { color: var(--accent); }
+        .arsenal-block p { color: #ddd; }
+        .code-box { background: #1a1a1a; border: 2px solid #333; color: #00ff00; padding: 1.5rem; font-family: monospace; font-size: 0.9rem; white-space: pre-wrap; margin: 1rem 0; overflow-x: auto; }
+        label { display: block; color: var(--white); margin-top: 1rem; font-weight: bold; text-transform: uppercase; }
+        input {
+            max-width: 280px;
+            width: 100%;
+            padding: 0.75rem;
+            margin: 0.5rem 0 1rem;
+            border: 2px solid var(--accent);
+            background: #111;
+            color: var(--white);
+            font-family: 'Space Mono', monospace;
+        }
+
+        .btn-row { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1rem; }
+        .btn {
+            display: inline-block;
+            background: var(--accent);
+            color: var(--black);
+            border: 3px solid var(--black);
+            padding: 0.85rem 1rem;
+            font-family: 'Archivo Black', sans-serif;
+            text-transform: uppercase;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .btn:hover { transform: translate(-3px, -3px); box-shadow: 5px 5px 0 var(--white); }
+
+        @media (max-width: 700px) {
+            body { padding: 1rem; }
+            .tool-block, .arsenal-block { padding: 1.25rem; }
+            .widget-frame { height: 1120px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html">← Back to Hub</a>
+    </nav>
+
+    <div class="container">
+        <div class="tool-block" id="toolBlock">
+            <h1>Burn Rate Runway Extender</h1>
+            <p class="subtitle">Find a startup's estimated runway before cash flow turns into a crisis.</p>
+            <iframe
+                id="runwayFrame"
+                class="widget-frame"
+                src="https://burn-rate-runway-widget.vercel.app/?source=partner_hub&campaign=startup_runway"
+                title="Burn Rate Runway Extender"
+                loading="lazy">
+            </iframe>
+        </div>
+
+        <div class="arsenal-block">
+            <h2>Deploy This Asset</h2>
+            <p>Embed this runway calculator in Wix blog articles, Wix Groups, landing pages, and partner resource pages. Use a partner name or campaign tag so clicks can be attributed instead of disappearing into the marketing fog machine.</p>
+
+            <label for="partnerInput">Partner / Campaign Slug</label>
+            <input type="text" id="partnerInput" placeholder="e.g. darwin" onkeyup="updateCode()">
+
+            <div class="code-box" id="embedCode">&lt;iframe
+  src="https://burn-rate-runway-widget.vercel.app/?partner=YOUR_PARTNER&source=wix_blog&campaign=startup_runway"
+  title="Burn Rate Runway Extender"
+  width="100%"
+  height="980"
+  style="max-width:940px;width:100%;border:0;overflow:hidden;"
+  loading="lazy"
+&gt;&lt;/iframe&gt;</div>
+
+            <div class="btn-row">
+                <button class="btn" onclick="copyEmbedCode()" id="copyBtn">Copy Embed Code</button>
+                <a class="btn" href="https://burn-rate-runway-widget.vercel.app/" target="_blank" rel="noopener noreferrer">Open Standalone Widget</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const embedded = urlParams.get('embedded') === 'true';
+
+        if (embedded) {
+            const arsenalBlock = document.querySelector('.arsenal-block');
+            const navBlock = document.querySelector('nav');
+            if (arsenalBlock) arsenalBlock.style.display = 'none';
+            if (navBlock) navBlock.style.display = 'none';
+        }
+
+        function cleanSlug(value) {
+            return (value || 'YOUR_PARTNER').replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 80) || 'YOUR_PARTNER';
+        }
+
+        function updateCode() {
+            const partner = cleanSlug(document.getElementById('partnerInput').value);
+            const code = `&lt;iframe\n  src="https://burn-rate-runway-widget.vercel.app/?partner=${partner}&source=wix_blog&campaign=startup_runway"\n  title="Burn Rate Runway Extender"\n  width="100%"\n  height="980"\n  style="max-width:940px;width:100%;border:0;overflow:hidden;"\n  loading="lazy"\n&gt;&lt;/iframe&gt;`;
+            document.getElementById('embedCode').innerHTML = code;
+        }
+
+        function copyEmbedCode() {
+            const text = document.getElementById('embedCode').innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = document.getElementById('copyBtn');
+                btn.innerText = 'Copied';
+                setTimeout(() => btn.innerText = 'Copy Embed Code', 1600);
+            });
+        }
+    </script>
+</body>
+</html>
