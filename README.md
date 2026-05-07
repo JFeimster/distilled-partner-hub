@@ -1,4 +1,4 @@
-<img width="1600" height="900" alt="Image" src="https://github.com/user-attachments/assets/7adf86ae-2327-4c3e-881d-e9813058a83a" />
+<img width="1000" height="485" alt="Image" src="https://github.com/user-attachments/assets/8921997a-5944-4783-aadc-7c8a410d804e" />
 
 # Distilled Partner Hub
 
