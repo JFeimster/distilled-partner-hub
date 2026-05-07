@@ -1,199 +1,96 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Distilled Funding | Partner Tool Hub</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg: #e0e0e0;
-            --concrete: #cccccc;
-            --black: #000000;
-            --white: #ffffff;
-            --accent: #FFD100;
-            --distilled-blue: #0047AB;
-            --border-width: 4px;
-            --shadow-offset: 8px;
-            --noise: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3ExternalIcon%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            background-color: var(--bg);
-            font-family: 'Space Mono', monospace;
-            color: var(--black);
-            overflow-x: hidden;
-            padding: 2rem;
-            line-height: 1.2;
-        }
-
-        body::before {
-            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--noise); opacity: 0.04; pointer-events: none; z-index: 1000;
-        }
-
-        header {
-            max-width: 1400px; margin: 0 auto 3rem auto;
-            border-bottom: var(--border-width) solid var(--black);
-            padding-bottom: 1rem; display: flex; justify-content: space-between; align-items: flex-end;
-        }
-
-        h1 { font-family: 'Archivo Black', sans-serif; font-size: clamp(3rem, 8vw, 6rem); text-transform: uppercase; letter-spacing: -2px; line-height: 0.9; }
-        .hub-meta { text-align: right; font-weight: 700; }
-
-        .grid-container {
-            max-width: 1400px; margin: 0 auto; display: grid;
-            grid-template-columns: repeat(12, 1fr); grid-auto-rows: minmax(150px, auto); gap: 1.5rem;
-        }
-
-        .block {
-            background: var(--white); border: var(--border-width) solid var(--black);
-            box-shadow: var(--shadow-offset) var(--shadow-offset) 0px 0px var(--black);
-            padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between;
-            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            text-decoration: none; color: inherit; position: relative; overflow: hidden; cursor: pointer;
-        }
-
-        .block.disabled { background: #d0d0d0; cursor: not-allowed; opacity: 0.8; box-shadow: 4px 4px 0px 0px var(--black); transform: translate(4px, 4px); }
-        .block.disabled:hover { transform: translate(4px, 4px); box-shadow: 4px 4px 0px 0px var(--black); background-color: #d0d0d0; }
-        .block:not(.disabled):hover { transform: translate(-4px, -4px); box-shadow: 12px 12px 0px 0px var(--black); background-color: var(--accent); }
-
-        .block.hero-blue:hover { background-color: var(--distilled-blue); color: var(--white); }
-        .block.hero-blue:hover .tag { background-color: var(--white); color: var(--distilled-blue); }
-        .block.hero-blue:hover .desc { color: #eee; }
-
-        .tag { display: inline-block; background: var(--black); color: var(--white); padding: 0.2rem 0.6rem; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; margin-bottom: 1rem; width: fit-content; transition: all 0.2s; }
-        .tag.offline { background: #666; }
-        .title { font-family: 'Archivo Black', sans-serif; font-size: 1.25rem; text-transform: uppercase; margin-bottom: 1rem; line-height: 1.1; }
-        .desc { font-size: 0.9rem; color: #333; transition: all 0.2s; }
-
-        /* Bento Grid */
-        .item-1 { grid-column: span 6; grid-row: span 3; background: var(--accent); }
-        .item-1 .title { font-size: 2.5rem; }
-        .item-2 { grid-column: span 6; grid-row: span 2; background: var(--white); }
-        .item-2 .title { font-size: 1.8rem; }
-        .item-3 { grid-column: span 3; grid-row: span 2; }
-        .item-4 { grid-column: span 3; grid-row: span 2; }
-        .item-5 { grid-column: span 4; grid-row: span 2; }
-        .item-6 { grid-column: span 8; grid-row: span 2; background: var(--black); color: var(--white); }
-        .item-6 .tag { background: var(--accent); color: var(--black); }
-        .item-6 .title { font-size: 2.2rem; }
-        .item-6 .desc { color: #ccc; }
-        .item-7 { grid-column: span 4; grid-row: span 2; background: var(--white); }
-        .item-7 .tag { background: var(--distilled-blue); color: var(--white); }
-
-        .tectonic-lines {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; opacity: 0.1;
-            background-image: linear-gradient(45deg, var(--black) 25%, transparent 25%), linear-gradient(-45deg, var(--black) 25%, transparent 25%);
-            background-size: 4px 4px;
-        }
-
-        @media (max-width: 1024px) {
-            .grid-container { grid-template-columns: repeat(6, 1fr); }
-            .item-1, .item-2, .item-6 { grid-column: span 6; }
-            .block { grid-column: span 3 !important; }
-        }
-        @media (max-width: 600px) {
-            header { flex-direction: column; align-items: flex-start; }
-            .hub-meta { text-align: left; margin-top: 1rem; }
-            .grid-container { grid-template-columns: 1fr; }
-            .block { grid-column: span 1 !important; }
-            h1 { font-size: 3.5rem; }
-        }
-
-        @keyframes reveal { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        .block { animation: reveal 0.6s cubic-bezier(0.23, 1, 0.32, 1) both; }
-        .item-1 { animation-delay: 0.05s; } .item-2 { animation-delay: 0.1s; } .item-3 { animation-delay: 0.15s; }
-        .item-4 { animation-delay: 0.2s; } .item-5 { animation-delay: 0.25s; } .item-6 { animation-delay: 0.3s; } .item-7 { animation-delay: 0.35s; }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="Burn Rate Runway Extender widget: calculate startup runway, estimate cash-out timing, and generate a calendar review file." />
+  <title>Burn Rate Runway Extender</title>
+  <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
+  <main class="widget-shell" aria-labelledby="widget-title">
+    <section class="hero-card">
+      <div class="eyebrow">60-second cashflow triage</div>
+      <h1 id="widget-title">Stop guessing. Run the numbers.</h1>
+      <p class="subhead">If the math says you are bleeding cash, fix it now — not after the next denial.</p>
 
-    <header>
-        <h1>Partner<br>Tool Hub</h1>
-        <div class="hub-meta">
-            DISTILLED FUNDING v1.0<br>
-            [EMBEDDABLE ASSETS INDEXED]<br>
-            EST. 2026
+      <form id="runway-form" class="calculator" novalidate>
+        <div class="field-grid">
+          <label class="field">
+            <span>Current Cash on Hand</span>
+            <div class="money-input">
+              <span aria-hidden="true">$</span>
+              <input id="cash" name="cash" type="number" inputmode="decimal" min="0" step="0.01" placeholder="50000" required />
+            </div>
+          </label>
+
+          <label class="field">
+            <span>Monthly Expenses</span>
+            <div class="money-input">
+              <span aria-hidden="true">$</span>
+              <input id="expenses" name="expenses" type="number" inputmode="decimal" min="0" step="0.01" placeholder="15000" required />
+            </div>
+          </label>
+
+          <label class="field">
+            <span>Monthly Revenue</span>
+            <div class="money-input">
+              <span aria-hidden="true">$</span>
+              <input id="revenue" name="revenue" type="number" inputmode="decimal" min="0" step="0.01" placeholder="5000" required />
+            </div>
+          </label>
         </div>
-    </header>
 
-    <div class="grid-container">
+        <button class="primary-button" type="submit">Calculate my runway</button>
+        <p id="form-error" class="form-error" role="alert"></p>
+      </form>
+    </section>
 
-        <a href="quiz.html" class="block item-1 hero-blue">
-            <div class="tectonic-lines"></div>
-            <div>
-                <span class="tag">Lead Gen Asset</span>
-                <h2 class="title">"Am I Fundable?" Pre-Screener Tool</h2>
-            </div>
-            <p class="desc">Intercept traffic. The interactive 4-question widget that filters business owners and automatically routes them to your specific Giggle or BankBreezy affiliate link.</p>
+    <section id="results" class="results-card is-hidden" aria-live="polite">
+      <div class="result-topline">
+        <div>
+          <div class="eyebrow">Your estimated runway</div>
+          <h2><span id="months-out">0.0</span> months</h2>
+        </div>
+        <div id="status-pill" class="status-pill">Calculating</div>
+      </div>
+
+      <div class="runway-date">
+        <span>Estimated cash-out date</span>
+        <strong id="cashout-date-out">—</strong>
+      </div>
+
+      <div class="metrics-grid">
+        <div><span>Net monthly burn</span><strong id="net-burn-out">$0</strong></div>
+        <div><span>Daily burn</span><strong id="daily-burn-out">$0</strong></div>
+        <div><span>Cash position</span><strong id="cash-out">$0</strong></div>
+      </div>
+
+      <div class="artifact-card">
+        <div>
+          <h3>Artifact: Runway Review Calendar Invite</h3>
+          <p>Put the pressure on the calendar. Ignored cash math becomes business gravity with worse timing.</p>
+        </div>
+        <button id="calendar-button" class="secondary-button" type="button">Download .ics invite</button>
+      </div>
+
+      <div id="scenario-note" class="scenario-note"></div>
+
+      <div class="cta-grid">
+        <a id="cta-instant" class="cta-card cta-primary" href="https://bankbreezy.com/funding/jason?utm_source=burn_rate_runway_widget&utm_medium=tool&utm_campaign=startup_runway" target="_blank" rel="noopener noreferrer">
+          <span>CTA #1</span>
+          <strong>Get Same-Day Instant Funding</strong>
         </a>
-
-        <a href="reality-check.html" class="block item-2">
-            <div>
-                <span class="tag">Internal Tracker</span>
-                <h2 class="title">DAC Reality Check Forecaster</h2>
-            </div>
-            <p class="desc">Calculate the exact daily conversation quota needed to hit your target income, based on the 5%–10% DAC BankBreezy BR range.</p>
+        <a id="cta-any-reason" class="cta-card" href="https://tally.so/r/w4R2Ad?utm_source=burn_rate_runway_widget&utm_medium=tool&utm_campaign=startup_runway" target="_blank" rel="noopener noreferrer">
+          <span>CTA #2</span>
+          <strong>Funding for Any Reason</strong>
         </a>
+      </div>
+    </section>
 
-        <a href="launchpad.html" class="block item-3">
-            <div>
-                <span class="tag">Onboarding</span>
-                <h2 class="title">7-Levels Broker Initiation</h2>
-            </div>
-            <p class="desc">The psychological "Why" wizard to solidify commitment for new agents.</p>
-        </a>
+    <p class="disclaimer">Estimates only. Terms depend on underwriting / eligibility.</p>
+  </main>
 
-        <a href="payout-engine.html" class="block item-4">
-            <div>
-                <span class="tag">Calculator</span>
-                <h2 class="title">DAC Payout Engine</h2>
-            </div>
-            <p class="desc">Instantly calculate raw commissions across BankBreezy and HealthShare.</p>
-        </a>
-
-        <a href="script-generator.html" class="block item-5">
-            <div>
-                <span class="tag">Outreach Asset</span>
-                <h2 class="title">Compliant Script Generator</h2>
-            </div>
-            <p class="desc">Copy-paste CAN-SPAM compliant outreach scripts dynamically loaded with your affiliate link for Trucking, Retail, and Gig Workers.</p>
-        </a>
-
-        <a href="override-matrix.html" class="block item-6">
-            <div>
-                <span class="tag">Recruitment Engine</span>
-                <h2 class="title">Override Commission Simulator</h2>
-            </div>
-            <p class="desc">Interactive visualization of the 10%-40% DAC Tier spread. Embed this on your recruitment pages to show sub-agents the math behind building a team.</p>
-        </a>
-
-        <a href="burn-rate-runway.html" class="block item-7">
-            <div>
-                <span class="tag">Startup Finance</span>
-                <h2 class="title">Burn Rate Runway Extender</h2>
-            </div>
-            <p class="desc">Find a startup's estimated runway before cash flow turns into a crisis. Calculates burn, runway, and creates a calendar-ready funding review prompt in under 60 seconds.</p>
-        </a>
-
-    </div>
-
-    <script>
-        document.addEventListener('mousemove', (e) => {
-            const amount = 5;
-            const x = (e.clientX / window.innerWidth - 0.5) * amount;
-            const y = (e.clientY / window.innerHeight - 0.5) * amount;
-            document.querySelectorAll('.block:not(.disabled)').forEach(block => {
-                if(!block.matches(':hover')) {
-                   block.style.transform = `translate(${x}px, ${y}px)`;
-                }
-            });
-        });
-    </script>
+  <script src="./script.js"></script>
 </body>
 </html>
