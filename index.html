@@ -83,6 +83,8 @@
         .item-6 .tag { background: var(--accent); color: var(--black); }
         .item-6 .title { font-size: 2.2rem; }
         .item-6 .desc { color: #ccc; }
+        .item-7 { grid-column: span 4; grid-row: span 2; background: var(--white); }
+        .item-7 .tag { background: var(--distilled-blue); color: var(--white); }
 
         .tectonic-lines {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; opacity: 0.1;
@@ -106,7 +108,7 @@
         @keyframes reveal { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         .block { animation: reveal 0.6s cubic-bezier(0.23, 1, 0.32, 1) both; }
         .item-1 { animation-delay: 0.05s; } .item-2 { animation-delay: 0.1s; } .item-3 { animation-delay: 0.15s; }
-        .item-4 { animation-delay: 0.2s; } .item-5 { animation-delay: 0.25s; } .item-6 { animation-delay: 0.3s; }
+        .item-4 { animation-delay: 0.2s; } .item-5 { animation-delay: 0.25s; } .item-6 { animation-delay: 0.3s; } .item-7 { animation-delay: 0.35s; }
     </style>
 </head>
 <body>
@@ -169,6 +171,14 @@
                 <h2 class="title">Override Commission Simulator</h2>
             </div>
             <p class="desc">Interactive visualization of the 10%-40% DAC Tier spread. Embed this on your recruitment pages to show sub-agents the math behind building a team.</p>
+        </a>
+
+        <a href="https://burn-rate-runway-widget.vercel.app/" class="block item-7" target="_blank" rel="noopener noreferrer">
+            <div>
+                <span class="tag">Startup Finance</span>
+                <h2 class="title">Burn Rate Runway Extender</h2>
+            </div>
+            <p class="desc">Find a startup's estimated runway before cash flow turns into a crisis. Calculates burn, runway, and creates a calendar-ready funding review prompt in under 60 seconds.</p>
         </a>
 
     </div>
